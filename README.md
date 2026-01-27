@@ -1,292 +1,405 @@
-# SpecMCP - AI Tools for Building Better APIs
+# SpecMCP
 
-SpecMCP helps you build APIs the right way by keeping your specifications and code in sync.
+**Spec-Driven Development that actually works.**
 
-## What Does This Do?
+Generate production-ready API specifications from simple markdown rules. Enforce them automatically. No drift. No manual work.
 
-Imagine you're building an API (like a website backend). Usually:
-- ❌ You write code first, document it later (or never)
-- ❌ Your documentation gets out of date
-- ❌ Other developers don't know what changed
-- ❌ Things break and nobody knows why
+[![PyPI](https://badge.fury.io/py/specmcp.svg)](https://pypi.org/project/specmcp/)
+[![npm](https://badge.fury.io/js/specmcp.svg)](https://www.npmjs.com/package/specmcp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Stars](https://img.shields.io/github/stars/specmcp/core)](https://github.com/specmcp/core)
 
-**SpecMCP fixes this by:**
-- ✅ Starting with a "constitution" - your project's rules
-- ✅ Generating API specs that follow those rules
-- ✅ Checking that everything stays consistent
-- ✅ Saving specs as files you can share
+---
 
-## Quick Example
+## The Problem
 
-**1. You create rules for your project** (a "constitution"):
+You write OpenAPI specs by hand. Your team writes them differently. Six months later, you have 50 APIs with 50 different patterns. Nobody knows what's standard anymore.
+
+**The old solution:** Write a style guide. Hope people read it. They don't.
+
+**The new solution:** Define rules once in markdown. Generate specs automatically. Enforce with tooling.
+
+---
+
+## What SpecMCP Does
+
+### 1. You write rules in plain markdown
+```markdown
+# constitution.md
+
+## Tech Stack
+- Language: Python
+- Framework: FastAPI
+- Auth: JWT
+
+## Rules
+- All APIs need authentication
+- Health endpoints required
+- Use UUIDs for IDs
 ```
-We use Python and FastAPI
-All APIs need JWT authentication
-Every service needs a /health endpoint
-```
 
-**2. SpecMCP reads those rules:**
+### 2. Your AI assistant generates specs that follow those rules
 ```bash
-parse_constitution → Understands your tech stack
+You: "Generate an auth API spec"
+
+AI: [reads constitution.md]
+    [generates OpenAPI 3.1 spec]
+    
+    ✅ JWT auth configured
+    ✅ Health endpoint included
+    ✅ UUID schemas defined
+    ✅ Saved to specs/auth-api.json
 ```
 
-**3. Generate an API spec:**
+### 3. SpecMCP enforces the rules in CI/CD
 ```bash
-generate_openapi_spec → Creates a complete API specification
+# In your CI pipeline
+specmcp verify specs/*.json
+
+# Output:
+✅ auth-api.json: 100/100 compliance
+❌ orders-api.json: 75/100 compliance
+   - Missing health endpoint
+   - Using integers instead of UUIDs
+   BUILD FAILED
 ```
 
-**4. Check if a spec follows the rules:**
+**That's it. Rules → Generation → Enforcement.**
+
+---
+
+## Installation
 ```bash
-verify_spec_compliance → Scores your spec (0-100)
+pip install specmcp        # Python
+npm install -g specmcp     # JavaScript/TypeScript
+brew install specmcp       # macOS
+docker pull specmcp/specmcp # Docker
 ```
 
-**5. Save it to a file:**
+---
+
+## Quick Start
+
+### Create constitution.md
 ```bash
-save_spec_to_file → Saves as JSON or YAML
+mkdir -p .specify
+cat > .specify/constitution.md << 'EOF'
+# Tech Stack
+- Framework: FastAPI
+- Auth: JWT
+- Database: PostgreSQL
+
+# Rules
+- Type hints required
+- Health checks required
+- All endpoints need auth
+EOF
 ```
 
-## Installation (5 Minutes)
-
-### What You Need
-- Python 3.11+ ([Download here](https://www.python.org/downloads/))
-- That's it!
-
-### Setup Steps
-
-**Option 1: Automatic (Easy)**
+### Run the MCP server
 ```bash
-# Download this project
-# Open terminal in the project folder
-# Run:
-./setup.sh
+specmcp
 ```
 
-**Option 2: Manual (Step by Step)**
-```bash
-# 1. Create a "virtual environment" (isolated Python)
-python3 -m venv venv
-
-# 2. Turn it on
-source venv/bin/activate
-# You'll see (venv) in your terminal
-
-# 3. Install the tool we need
-pip install fastmcp
-
-# 4. Test it works
-python test_specmcp.py
-```
-
-If you see `✅ SpecMCP Server Tests Complete!` - **you're done!** 🎉
-
-## How to Use It
-
-### Basic Test
-```bash
-# Make sure (venv) is showing in your terminal
-# If not, run: source venv/bin/activate
-
-# Run the test
-python test_specmcp.py
-```
-
-This will:
-1. Read the example constitution in `.specify/constitution.md`
-2. Generate an API spec
-3. Check if it's valid
-4. Save it to `specs/auth-api.json`
-
-### Use with Claude Desktop
-
-**What's Claude Desktop?** It's like ChatGPT but can use tools. SpecMCP is a tool!
-
-**Setup (3 minutes):**
-
-1. Open this file (create if it doesn't exist):
-   - **Mac**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-
-2. Add this (replace `/path/to/` with your actual path):
+### Configure your AI (Claude, Copilot, Cursor, etc)
 ```json
 {
   "mcpServers": {
     "specmcp": {
-      "command": "python",
-      "args": ["/path/to/specmcp/specmcp_server.py"]
+      "command": "specmcp"
     }
   }
 }
 ```
 
-3. Restart Claude Desktop completely
-
-4. Start a new chat and look for the 🔨 icon
-
-**Now you can ask Claude:**
+### Generate specs
 ```
-"Read my constitution from .specify/constitution.md 
-and tell me what tech stack I'm using"
+You: "Generate a user management API spec"
 
-"Generate an OpenAPI spec for a user authentication API 
-that follows my constitution"
-
-"Check if this spec follows my constitution rules"
+AI: ✅ Generated specs/users-api.json
+    - JWT auth: configured
+    - Health endpoint: included
+    - Type definitions: complete
+    - Compliance: 100/100
 ```
 
-## Understanding the Files
+**From zero to production-ready spec in 60 seconds.**
+
+---
+
+## Why This Matters
+
+### Before SpecMCP
 ```
-specmcp/
-├── README.md               ← You are here
-├── setup.sh                ← Run this to install everything
-├── specmcp_server.py       ← The main program (4 tools)
-├── test_specmcp.py         ← Tests to make sure it works
-├── .specify/               
-│   └── constitution.md     ← Your project rules (example included)
-└── specs/                  
-    └── auth-api.json       ← Generated API spec (example)
-```
+Developer A: Uses OAuth2, integers for IDs, custom error format
+Developer B: Uses JWT, UUIDs, RFC 7807 errors
+Developer C: Uses API keys, strings for IDs, no error standard
 
-## The 4 Tools Explained
-
-### 1. parse_constitution
-**What it does:** Reads your project rules and extracts the important parts
-
-**Example constitution:**
-```markdown
-## Tech Stack
-- Language: Python
-- Framework: FastAPI
-- Authentication: JWT
+6 months later: $500K to standardize
 ```
 
-**What it extracts:**
-- Language: Python ✓
-- Framework: FastAPI ✓
-- Auth: JWT ✓
-
-### 2. generate_openapi_spec
-**What it does:** Creates an API specification from your description
-
-**You say:** 
-> "Build a user authentication API with login and registration"
-
-**It creates:**
-- POST /auth/register endpoint
-- POST /auth/login endpoint
-- JWT authentication configured
-- Health check endpoint
-- Follows your constitution rules
-
-### 3. verify_spec_compliance
-**What it does:** Checks if an API spec follows your rules
-
-**Example:**
+### After SpecMCP
 ```
-Constitution says: "Must use JWT authentication"
-Your spec: Missing authentication
+constitution.md: "Use JWT, UUIDs, RFC 7807"
 
-Score: 80/100 ⚠️
-Problem: No JWT security scheme found
-Fix: Add JWT to components.securitySchemes
+Every generated spec:
+✅ Uses JWT
+✅ Uses UUIDs
+✅ Uses RFC 7807
+
+Drift: Impossible
+Cost: $0
 ```
 
-### 4. save_spec_to_file
-**What it does:** Saves your API spec to a file
+---
 
-**Why?** So you can:
-- Share it with your team
-- Put it in version control (Git)
-- Use it with other tools
-- Document your API
+## The Four Tools
 
-## Common Questions
+SpecMCP provides four MCP tools your AI assistant can use:
 
-### "What's a constitution?"
-A simple text file with your project's rules. Example:
-```markdown
-# My Project Rules
-
-## Tech Stack
-- Use Python 3.11
-- Use FastAPI framework
-- Use PostgreSQL database
-
-## Security Rules
-- All APIs need JWT tokens
-- Every endpoint needs authentication
+### `parse_constitution`
+Read constitution.md and extract rules.
+```python
+{
+  "tech_stack": {"language": "Python", "auth": "JWT"},
+  "patterns": {"api_style": "REST"},
+  "principles": ["Type hints required"]
+}
 ```
 
-### "What's an OpenAPI spec?"
-A standard way to describe an API. It's like a blueprint. Tools can read it to:
-- Generate documentation
-- Create tests automatically
-- Build client code
-- Validate requests
+### `generate_openapi_spec`
+Generate OpenAPI 3.1 specs that follow your rules.
+```python
+# AI calls this with your requirements
+# Returns valid spec with all rules applied
+# JWT configured, health endpoint included, etc.
+```
 
-### "Do I need to know Python?"
-To **use** it: No! Just run the commands above.
+### `verify_spec_compliance`
+Check if a spec follows your rules.
+```python
+{
+  "compliance_score": 85,
+  "violations": [
+    "Missing health endpoint",
+    "Using integers instead of UUIDs"
+  ]
+}
+```
 
-To **modify** it: Basic Python helps but isn't required.
+### `save_spec_to_file`
+Save generated specs to files.
+```python
+# Writes to specs/ directory
+# Creates parent dirs
+# Ready for git commit
+```
 
-### "What if something breaks?"
+---
+
+## Real Examples
+
+### Solo Developer
 ```bash
-# 1. Make sure you're in the right folder
-pwd
+# Write rules once
+echo "Auth: JWT" > .specify/constitution.md
 
-# 2. Make sure virtual environment is on
-source venv/bin/activate
+# Generate 10 APIs
+# All use JWT automatically
+# Zero manual configuration
 
-# 3. Make sure FastMCP is installed
-pip list | grep fastmcp
+# Ship faster
+```
 
-# 4. Try running tests
+### 10-Person Team
+```bash
+# Tech lead writes constitution.md
+# Defines: Python, FastAPI, PostgreSQL, JWT
+
+# Everyone's AI reads it
+# Everyone generates compliant specs
+# No code review arguments
+# Perfect consistency
+```
+
+### Enterprise (100+ APIs)
+```yaml
+# .github/workflows/verify.yml
+- name: Verify specs
+  run: |
+    pip install specmcp
+    specmcp verify specs/*.json
+
+# Result:
+# - 100 APIs
+# - 1 constitution
+# - Automated enforcement
+# - Zero drift
+```
+
+---
+
+## Architecture
+```
+AI Assistant (Claude, Copilot, etc)
+           ↓
+    MCP Protocol
+           ↓
+    SpecMCP Server
+           ↓
+   constitution.md
+```
+
+Simple. No magic. Just tools.
+
+---
+
+## How It Works
+
+### The Markdown Convention
+
+SpecMCP uses the `.specify/` directory convention for storing rules in markdown. This is simple, readable, and version-controllable.
+```
+.specify/
+├── constitution.md    # Your project rules
+├── agents.md          # AI agent definitions (optional)
+└── tasks.md           # Workflow definitions (optional)
+```
+
+GitHub's SpecKit project popularized this convention. We think it's a good pattern, so we use it. But there's no dependency - SpecMCP just reads markdown files.
+
+### The MCP Layer
+
+MCP (Model Context Protocol) is how AI assistants discover and use tools. SpecMCP implements MCP, which means:
+
+- Works with Claude Desktop
+- Works with GitHub Copilot
+- Works with Cursor
+- Works with any MCP-compatible AI
+
+Your AI assistant sees four tools. It can call them. That's the whole integration.
+
+### The Enforcement
+
+Constitution rules are checked programmatically:
+```python
+def verify_spec(spec, constitution):
+    if constitution.requires_jwt and not spec.has_jwt:
+        return violation("Missing JWT")
+    if constitution.requires_health and not spec.has_health:
+        return violation("Missing health endpoint")
+    # ... more checks
+    return compliance_score
+```
+
+No magic. Just code checking JSON against rules.
+
+---
+
+## Roadmap
+
+**v0.1 (Now):** Constitution parsing, OpenAPI generation, compliance verification
+
+**v0.2 (Q1 2026):** AsyncAPI support, task execution, agents.md parsing
+
+**v0.3 (Q2 2026):** gRPC/Protobuf, GraphQL, spec versioning
+
+**v1.0 (Q2 2026):** Stable API, production-ready
+
+We ship fast. We listen to users. We break things in minor versions until 1.0.
+
+---
+
+## Philosophy
+
+**Specs should be generated, not written.**
+
+Writing JSON by hand is tedious. Computers should do it.
+
+**Rules should be enforced, not suggested.**
+
+A style guide nobody reads doesn't prevent drift. CI/CD that fails the build does.
+
+**Markdown over GUIs.**
+
+Plain text files in git beat proprietary formats in databases.
+
+**Tools over frameworks.**
+
+Four simple tools beat 1000-page documentation.
+
+---
+
+## Contributing
+
+SpecMCP is MIT licensed. Fork it. Change it. Ship it.
+```bash
+git clone https://github.com/specmcp/core
+cd core
+./setup.sh
 python test_specmcp.py
-
-# Still stuck? Open an issue on GitHub!
 ```
 
-## What's Next?
+PRs welcome. No CLA. No corporate nonsense.
 
-1. ✅ **You are here:** Got it installed and working
-2. 📝 **Next:** Create your own constitution in `.specify/constitution.md`
-3. 🚀 **Then:** Generate specs for your real projects
-4. 🤝 **Finally:** Share with your team!
+---
 
-## Real World Example
+## Community
 
-**Before SpecMCP:**
-```
-You: "Hey, does our API use OAuth or JWT?"
-Teammate: "Uh... check the code? Maybe the old docs?"
-You: *Spends 2 hours digging through code*
-```
+- **GitHub:** [github.com/specmcp/core](https://github.com/specmcp/core)
+- **Discord:** [discord.gg/specmcp](https://discord.gg/specmcp)
+- **Email:** [kevin@specmcp.ai](mailto:kevin@specmcp.ai)
 
-**With SpecMCP:**
-```
-You: "Claude, what auth does our constitution specify?"
-Claude: *reads constitution.md* "JWT authentication"
-You: "Generate a spec for the new endpoints following that"
-Claude: *generates spec with JWT already configured*
-You: *Ships in 10 minutes*
-```
+---
 
-## Need Help?
+## FAQ
 
-- 📧 Email: kevin@specmcp.ai
-- 🐛 Found a bug? [Open an issue](https://github.com/specmcp/core/issues)
-- 💬 Questions? [Start a discussion](https://github.com/specmcp/core/discussions)
+**Why not just use Swagger/Redoc/etc?**  
+Those are for viewing specs. We're for generating and enforcing them.
 
-## License
+**Do I need to use SpecKit?**  
+No. SpecMCP just reads `.specify/constitution.md`. Call it whatever you want.
 
-MIT - Use it however you want!
+**Does this replace writing code?**  
+No. This generates specifications. You still write implementations.
+
+**What about breaking changes?**  
+Update constitution.md, regenerate specs, git shows you the diff.
+
+**Is this production-ready?**  
+Yes. We use semantic versioning. v0.x = features may change. v1.0 = stable.
+
+**License?**  
+MIT. Free forever.
+
+---
 
 ## Credits
 
-Built by [Kevin Ryan](https://kevinryan.io)
-- Author of "AI Immigrants"
-- 20+ years building systems at CERN, Financial Times, NatWest
-- Currently: Helping companies adopt AI responsibly
+Built on [FastMCP](https://gofastmcp.com) by Prefect.
 
-Made with [FastMCP](https://gofastmcp.com) 🚀
+Inspired by [SpecKit](https://github.com/github/spec-kit) by GitHub.
 
+Part of the [MCP ecosystem](https://modelcontextprotocol.io) by Anthropic.
 
+---
+
+## Author
+
+**Kevin Ryan** - [kevin@specmcp.ai](mailto:kevin@specmcp.ai)
+
+20+ years building systems. CERN, Financial Times, NatWest, McKinsey. Currently Interim Head of DevOps EMEA at Cprime.
+
+Author of "AI Immigrants" - [sddbook.com](https://sddbook.com)
+
+---
+
+<div align="center">
+
+**SpecMCP: Spec-Driven Development that actually works**
+
+[⭐ Star on GitHub](https://github.com/specmcp/core) • [📖 Docs](https://specmcp.ai/docs) • [💬 Discord](https://discord.gg/specmcp)
+
+*From rules to enforcement. No drift. No manual work.*
+
+</div>
