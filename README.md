@@ -1,5 +1,7 @@
 # SpecMCP
 
+![SPEC MCP](./spec-mcp-rainbow.svg)
+
 **Spec-Driven Development that actually works.**
 
 Generate production-ready API specifications from simple markdown rules. Enforce them automatically. No drift. No manual work.
