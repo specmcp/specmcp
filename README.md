@@ -1,6 +1,6 @@
 # SpecMCP
 
-![SPEC MCP](./spec-mcp-rainbow.svg)
+![SPEC MCP](./spec-mcp-transparent.svg)
 
 **Spec-Driven Development that actually works.**
 
