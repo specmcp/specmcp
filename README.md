@@ -11,6 +11,8 @@ Generate production-ready API specifications from simple markdown rules. Enforce
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Stars](https://img.shields.io/github/stars/specmcp/core)](https://github.com/specmcp/core)
 
+> ⚠️ **Early Alpha** - This project is experimental and under active development. APIs will change. Things will break. But if you're into spec-driven development and want to shape where this goes, now's the time to get involved.
+
 ---
 
 ## The Problem
@@ -300,13 +302,15 @@ No magic. Just code checking JSON against rules.
 
 ## Roadmap
 
-**v0.1 (Now):** Constitution parsing, OpenAPI generation, compliance verification
+> 🚧 **Current Status: Alpha (v0.1)** - Core concepts work. Rough edges everywhere. Perfect for experimentation, not for production.
+
+**v0.1 (Now):** Constitution parsing, OpenAPI generation, compliance verification - *proof of concept*
 
 **v0.2 (Q1 2026):** AsyncAPI support, task execution, agents.md parsing
 
 **v0.3 (Q2 2026):** gRPC/Protobuf, GraphQL, spec versioning
 
-**v1.0 (Q2 2026):** Stable API, production-ready
+**v1.0 (Q3 2026):** Stable API, production-ready
 
 We ship fast. We listen to users. We break things in minor versions until 1.0.
 
@@ -355,6 +359,9 @@ PRs welcome. No CLA. No corporate nonsense.
 ---
 
 ## FAQ
+
+**Is this production-ready?**  
+Not yet. This is early alpha software. Use it for experimentation, side projects, and helping shape the direction. Production use at your own risk until v1.0.
 
 **Why not just use Swagger/Redoc/etc?**  
 Those are for viewing specs. We're for generating and enforcing them.
