@@ -270,7 +270,7 @@ GitHub's SpecKit project popularized this convention. We think it's a good patte
 
 ### The MCP Layer
 
-MCP (Model Context Protocol) is how AI assistants discover and use tools. SpecMCP implements MCP, which means:
+MCP (Model Context Protocol) is an open standard from the Linux Foundation that defines how AI assistants discover and use tools. SpecMCP implements MCP, which means:
 
 - Works with Claude Desktop
 - Works with GitHub Copilot
@@ -380,17 +380,17 @@ Built on [FastMCP](https://gofastmcp.com) by Prefect.
 
 Inspired by [SpecKit](https://github.com/github/spec-kit) by GitHub.
 
-Part of the [MCP ecosystem](https://modelcontextprotocol.io) by Anthropic.
+Part of the [Model Context Protocol](https://modelcontextprotocol.io) ecosystem - a Linux Foundation project.
 
 ---
 
 ## Author
 
-**Kevin Ryan** - [kevin@specmcp.ai](mailto:kevin@specmcp.ai)
+**Kevin Ryan** - [kevin@kevinryan.io](mailto:kevin@kevinryan.io)
 
 20+ years building systems. CERN, Financial Times, NatWest, McKinsey. Currently Interim Head of DevOps EMEA at Cprime.
 
-Author of "AI Immigrants" - [sddbook.com](https://sddbook.com)
+Author of "[AI Immigrants](https://aiimmigrants.com)" - [Spec-Driven Development](https://sddbook.com)
 
 ---
 
